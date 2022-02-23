@@ -91,3 +91,41 @@ The `build_glyphs()` function takes several parameters:
     'T:#w-0/#w-9/#w-8/w-7/#w-6/#w-5/w-4/#w-3/#w-2/#w-1/w/#w1/#w2/w3/#w4/#w5/#w6/w7/|||'
 
 ![image](https://user-images.githubusercontent.com/15966631/155342667-fe71d0ab-7711-4917-a9fc-5159d3aae9c5.png)
+
+    >>> scale = ambitus.modal(ambitus.LYDIAN, "D4")
+    >>> print(ambitus.amb_scale(scale, clef="alto", head="q", stem=False))
+    Aq1s:q2s:#q3s:#q4s:q5s:q6s:#q7s:q8s:|
+
+![image](https://user-images.githubusercontent.com/15966631/155372250-c8cfae73-9ad1-4121-b4b9-6b697597e6e1.png)
+
+
+### Interactive mode
+
+If you run the module from the command line instead of importing it, you can build scales interactively.
+
+Here's an example session:
+
+    > python ambitus.py
+    Choose mode (first two letters: IO(nian), DO(rian), PH(rygian), LY, MI, AE or LO) or <Enter> to quit: IO
+    Begin scale at (default: C4): A4
+    End scale at or below (default: one octave above the beginning): A6
+    Scale:  [A4, B4, C#5, D5, E5, F#5, G#5, A5, B5, C#6, D6, E6, F#6, G#6, A6]
+    Which clef should be used (treble (default), bass, alto or tenor)? tr
+    Invalid clef!
+    Which clef should be used (treble (default), bass, alto or tenor)?
+    Choose separator (one of ;:/?_ (default ':')) /
+    Choose notehead (one of q (default), h, w) h
+    Remove stems? (default: No) Y
+    Any additional spacing in front of the scale (;:/?_ or leave blank)? 
+    Any additional characters at the end (default ':|')
+    Note F#6 out of range for treble clef (Fb3-E#6)
+    Note G#6 out of range for treble clef (Fb3-E#6)
+    Note A6 out of range for treble clef (Fb3-E#6)
+    Th-1s/hs/#h1s/h2s/h3s/#h4s/#h5s/h6s/h7s/#h8s/h9s/h0s:|
+    
+    Choose mode (first two letters: IO(nian), DO(rian), PH(rygian), LY, MI, AE or LO) or <Enter> to quit:
+    Exiting...
+
+Result:
+![image](https://user-images.githubusercontent.com/15966631/155371282-6963c2e9-3d79-4597-a17a-3065db8fdb7c.png)
+
