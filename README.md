@@ -86,7 +86,8 @@ The `build_glyphs()` function takes several parameters:
  
 ### Examples 
 
->>> scale = ambitus.modal(ambitus.MIXOLYDIAN, startkey="F#3", stopkey="C6")
->>> ambitus.build_glyphs(scale, head="w", sep="/", start=":", end="/|||")
-'T:#w-0/#w-9/#w-8/w-7/#w-6/#w-5/w-4/#w-3/#w-2/#w-1/w/#w1/#w2/w3/#w4/#w5/#w6/w7/|||'
+    >>> scale = ambitus.modal(ambitus.MIXOLYDIAN, startkey="F#3", stopkey="C6")
+    >>> ambitus.build_glyphs(scale, head="w", sep="/", start=":", end="/|||")
+    'T:#w-0/#w-9/#w-8/w-7/#w-6/#w-5/w-4/#w-3/#w-2/#w-1/w/#w1/#w2/w3/#w4/#w5/#w6/w7/|||'
+
 ![image](https://user-images.githubusercontent.com/15966631/155342667-fe71d0ab-7711-4917-a9fc-5159d3aae9c5.png)
