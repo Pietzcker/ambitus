@@ -168,10 +168,10 @@ if __name__ == "__main__":
             print("Exiting...")
             exit()
         while True:
-            base = input("Begin scale at (default: C4): ")
+            base = input("Begin scale at (default: C4)? ")
             if not base:
                 base = "C4"
-            end = input("End scale at or below (default: one octave above the beginning): ")
+            end = input("End scale at or below (default: one octave above the beginning)? ")
             try:
                 notes = modal(mode, base, end)
             except ValueError as err:
