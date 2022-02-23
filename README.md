@@ -93,7 +93,7 @@ The `build_glyphs()` function takes several parameters:
 ![image](https://user-images.githubusercontent.com/15966631/155342667-fe71d0ab-7711-4917-a9fc-5159d3aae9c5.png)
 
     >>> scale = ambitus.modal(ambitus.LYDIAN, "D4")
-    >>> print(ambitus.amb_scale(scale, clef="alto", head="q", stem=False))
+    >>> print(ambitus.build_glyphs(scale, clef="alto", head="q", stem=False))
     Aq1s:q2s:#q3s:#q4s:q5s:q6s:#q7s:q8s:|
 
 ![image](https://user-images.githubusercontent.com/15966631/155372250-c8cfae73-9ad1-4121-b4b9-6b697597e6e1.png)
