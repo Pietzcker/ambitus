@@ -13,7 +13,6 @@ While the font is quite straightforward to use, building complex scales can be t
 Not really much to it...
 ```python
 >>> import ambitus
->>>
 ```
 ## Generating notes
 You can generate `Note` objects by specifying its base (one of `CDEFGAB`), an optional accidental (`b` or `#`) and the octave (`1-6`). These are reflected in the `Note`s attributes `note`, `alt` (for alteration, negative values are flat, positive values are sharp), and `oct`.
@@ -29,7 +28,7 @@ You can generate `Note` objects by specifying its base (one of `CDEFGAB`), an op
 >>> print(N)
 Cb4
 >>> M = ambitus.Note("A#4")
->>> M > N  # A#4 is higher than Cb4
+>>> M > N                   # A#4 is higher than Cb4
 True
 >>> ambitus.Note("B3") < N  # enharmonically equivalent notes are not considered identical
 True
@@ -99,6 +98,14 @@ build_glyphs(notes, clef="treble", head="q", stem=True, sep=":", start="", end="
  - `end` is attached to the end of the string. It should contain at least one separator, and you may want to include a barline `"|"` for a single line, `"||"` for a double barline, and `"|||"` for an ending barline.
  
 ### Examples 
+```python
+>>> scale = ambitus.modal()             # Simple example with default parameters: C major (ionian) 
+>>> print(ambitus.build_glyphs(scale))  # Default "rendering" parameters: quarter notes with stems
+Tq-6:q-5:q-4:q-3:q-2:q-1:q:q1:|
+```
+
+![image](https://user-images.githubusercontent.com/15966631/155388245-1ebfc6ee-3b2f-48e5-a02a-a70f0eb057ac.png)
+
 ```python
 >>> scale = ambitus.modal(ambitus.MIXOLYDIAN, startkey="F#3", stopkey="C6")
 >>> ambitus.build_glyphs(scale, head="w", sep="/", start=":", end="/|||")
