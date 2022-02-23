@@ -1,17 +1,27 @@
 import copy
 
-# constants for the classic modes
-AEOLIAN = 0
-LOCRIAN = 1
-IONIAN = 2
-DORIAN = 3
-PHRYGIAN = 4
-LYDIAN = 5
-MIXOLYDIAN = 6
-
 # number of half tones required to advance one step on the diatonic scale,
-# based on A aeolian. This is repeated enough times to span an entire system (21 steps)
-steps = (2,1,2,2,1,2,2) * 4
+# based on A aeolian.
+steps = (2,1,2,2,1,2,2) 
+
+scales = {"Major":          (2,2,1,2,2,2,1),
+          "Natural minor":  (2,1,2,2,1,2,2),
+          "Harmonic minor": (2,1,2,2,1,3,1),
+          "Aeolian":    (2,1,2,2,1,2,2),
+          "Locrian":    (1,2,2,1,2,2,2),
+          "Ionian":     (2,2,1,2,2,2,1),
+          "Lydian":     (2,2,2,1,2,2,1),
+          "Dorian":     (2,1,2,2,2,1,2),
+          "Phrygian":   (1,2,2,2,1,2,2),
+          "Mixolydian": (2,2,1,2,2,1,2),
+          "Melodic minor":    (2,1,2,2,2,2,1),
+          "Phrygian n6":      (1,2,2,2,2,1,2),
+          "Lydian augmented": (2,2,2,2,1,2,1),
+          "Lydian dominant":  (2,2,2,1,2,1,2),
+          "Mixolydian b6":    (2,2,1,2,1,2,2),
+          "Locrian n2":       (2,1,2,1,2,2,2),
+          "Altered dominant": (1,2,1,2,2,2,2),
+          }
 
 # glyphs for all the clefs
 clefs = {"treble": "T", "bass": "B", "alto": "A", "tenor": "t"}
@@ -76,17 +86,26 @@ ranges = {"bass": {"low": Note("Ab1"), "high": Note("G#4"), "middle": Note("D3")
          }
 
 
-def modal(mode=IONIAN, startkey="C3", stopkey=""):
-    """Build a scale using one of the classic modes.
-    mode can be set to a value between 0 (AEOLIAN) and 6 (LOCRIAN).
+
+def diatonic(scale="Major", startkey="C3", stopkey=""):
+    """Build a diatonic scale .
     startkey is composed of a key (one of CDEFGAB), an optional accidental (b or #) and an octave (1-6).
     Note that the lowest possible key in the bass clef is Ab1, and the highest possible key in the
     treble clef is "E#6", so if you exceed these values, you will not be able to build a complete scale.
     Middle C is "C3".
     stopkey is optional. If it is left blank, it will default to one octave above startkey (or "E#6" if lower).
     Return value is a list of notes that can be fed into a glyph generator. Note that it is possible to generate 
-    scales that can't be written in Ambitus, e. g. a locrian scale from Cb4 because that would require bb accidentals
-    which aren't currently supported in Ambitus."""
+    scales that can't be written in Ambitus."""
+
+    try:
+        scale = scales[scale]
+    except KeyError:
+        print(f"Unknown scale {scale}! Choose one of the following:")
+        for scale in scales.keys():
+            print(scale)
+        exit()
+
+    # Convert start and stop key into valid Note objects
     start = Note(startkey)
     if stopkey:
         stop = Note(stopkey)
@@ -98,29 +117,29 @@ def modal(mode=IONIAN, startkey="C3", stopkey=""):
             stop = highest
     if stop < start:
         raise ValueError(f"{stop} is below {start}!")
+
+    # Step through the scale from the chosen starting note
     current = start
-    scale_index = "ABCDEFG".find(start.note)
-    mode_index = mode
+    base_index = "ABCDEFG".find(start.note)  # Use the aeolian scale as reference
+    scale_index = 0                          # Mark the position within the chosen scale
     notes = []
     while current <= stop:
         notes.append(copy.copy(current))
-        basestep = steps[scale_index]
-        modestep = steps[mode_index]
-        if basestep < modestep:
-            current.alt += 1
-        elif basestep > modestep:
-            current.alt -= 1
-        scale_index += 1
-        mode_index += 1
-        current.note = chr(ord(current.note) + 1)
-        current.noteindex = (current.noteindex + 1) % 7
-        if current.note == "H":
+        basestep = steps[base_index]         # How many halftone steps would it take on the basic scale,...
+        scalestep = scale[scale_index]       # ... and how many on the chosen scale to advance to the next note?
+        current.alt += scalestep-basestep    # If they differ, the number of accidentals must increase or decrease
+        base_index = (base_index + 1) % 7    # Advance one note, wrapping around after 7 steps
+        scale_index = (scale_index + 1) % 7  # Same here
+        current.note = chr(ord(current.note) + 1)        # Note name advances as well, both by name (C -> D)
+        current.noteindex = (current.noteindex + 1) % 7  # as well as by number (0 -> 1)
+        if current.note == "H":              # If we passed G, we must do back to A
             current.note = "A"
-        elif current.note == "C":
+        elif current.note == "C":            # If we reached C, we have advanced into the next octave
             current.oct += 1
     return notes
 
 def diatonic_distance(note, ref_note):
+    """Returns the number of positions (lines/spaces) a certain note is removed from the middle staff line."""
     return note.noteindex - ref_note.noteindex + 7 * (note.oct - ref_note.oct)
 
 def glyph(note, clef="treble", head="q", stem=""):
@@ -160,20 +179,31 @@ def build_glyphs(notes, clef="treble", head="q", stem=True, sep=":", start="", e
     return clefs[clef] + start + sep.join(glyphs) + end
 
 if __name__ == "__main__":
+    print("Welcome to Ambitus!")
+    print("-------------------")
+    choices = list(scales.keys())
+    print("The following scales are available:")
+    for i, scale in enumerate(choices):
+        print(f"{i+1:>2}: {scale}")
     while True:
-        mode = input("Choose mode (first two letters: IO(nian), DO(rian), PH(rygian), LY, MI, AE or LO) or <Enter> to quit: ").upper()
+        scale = input("\nChoose a scale or press <Enter> to quit: ")
         try:
-            mode = ["AE", "LO", "IO", "DO", "PH", "LY", "MI"].index(mode)
+            scale = choices[int(scale)-1]
         except ValueError:
             print("Exiting...")
             exit()
+        except IndexError:
+            print("Choose one of these numbers:")
+            for i, scale in enumerate(choices):
+                print(f"{i+1:>2}: {scale}")
+            continue
         while True:
             base = input("Begin scale at (default: C4)? ")
             if not base:
                 base = "C4"
             end = input("End scale at or below (default: one octave above the beginning)? ")
             try:
-                notes = modal(mode, base, end)
+                notes = diatonic(scale, base, end)
             except ValueError as err:
                 print(err)
                 continue
@@ -206,9 +236,9 @@ if __name__ == "__main__":
             break
         stem = True
         if head in "qh":
-            stem = input("Remove stems (default: No)? ")
-            if stem:
-                if stem[0].lower() == "y":
+            remove_stem = input("Remove stems (default: No)? ")
+            if remove_stem:
+                if remove_stem[0].lower() == "y":
                     stem = False 
         start = input("Any additional spacing in front of the scale (one of ;:/?_ or leave blank)? ")
         end = input("Any additional characters at the end (default ':|')? ")
