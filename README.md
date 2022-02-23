@@ -44,7 +44,7 @@ The `modal()` function returns a list of `Note` objects that can later be fed in
 modal(mode=ambitus.IONIAN, startkey="C3", stopkey="")
 ```
 
-The parameter `mode` can be set to `IONIAN` (major key), `DORIAN`, `PHRYGIAN`, `LYDIAN`, `MIXOLYDIAN`, `AEOLIAN` (melodic minor key) and `LOCRIAN`. Default is `IONIAN`.
+The parameter `mode` can be set to `IONIAN` (major key), `DORIAN`, `PHRYGIAN`, `LYDIAN`, `MIXOLYDIAN`, `AEOLIAN` (natural minor key) and `LOCRIAN`. Default is `IONIAN`.
 
 `startkey` (defaulting to `"C3"`) can be set to any key between `Cb1` (C flat, first octave) and `"B#6"` (B sharp, 6th octave). For reference, `"C3"` is middle C.
 
