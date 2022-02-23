@@ -1,5 +1,5 @@
 # ambitus
-A Python helper module for generating scales to be used with the Ambitus font
+_A Python helper module for generating scales to be used with the Ambitus font_
 
 The Ambitus font provides a flexible means of generating simple musical diagrams, for example pitch ranges for vocalists, initial tunings for timpani or scales of any kind.
 
@@ -82,7 +82,7 @@ The `build_glyphs()` function takes several parameters:
  - `stem` is `True` by default. If you set it to `False`, quarter or half notes will be printed without a stem.
  - `sep` is the separator you want to use between notes. It defaults to `":"` which is adequate for quarter and half note scales but may be a bit narrow for whole noted scales. Other separators include (in ascending width) `"/"`, `"?"` and `"_"`. A narrower separator `";"` is also available, but probably too narrow unless your scales doesn't contain any accidentals.
  - `start` can be any string you want to include between the clef and the start of your scale, for example, an additional separator.
- - `end` is attached to the end of the string. It should contain at least one separator, and you may want to include a barline `"|"` for a single line, "||" for a double barline, and "|||" for an ending barline.
+ - `end` is attached to the end of the string. It should contain at least one separator, and you may want to include a barline `"|"` for a single line, `"||"` for a double barline, and `"|||"` for an ending barline.
  
 ### Examples 
 
