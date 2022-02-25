@@ -87,7 +87,7 @@ ranges = {"bass": {"low": Note("Ab1"), "high": Note("G#4"), "middle": Note("D3")
 
 
 
-def diatonic(scale="Major", startkey="C3", stopkey=""):
+def diatonic(scale="Major", startkey="C4", stopkey=""):
     """Build a diatonic scale .
     startkey is composed of a key (one of CDEFGAB), an optional accidental (b or #) and an octave (1-6).
     Note that the lowest possible key in the bass clef is Ab1, and the highest possible key in the

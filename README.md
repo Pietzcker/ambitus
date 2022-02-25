@@ -63,7 +63,7 @@ The parameter `scale` can be set to [one of the following values](https://en.wik
  - `"Locrian n2"`
  - `"Altered dominant"`
 
-`startkey` (defaulting to `"C3"`) can be set to any key between `Cb1` (C flat, first octave) and `"B#6"` (B sharp, 6th octave). For reference, `"C3"` is middle C.
+`startkey` (defaulting to `"C4"`) can be set to any key between `Cb1` (C flat, first octave) and `"B#6"` (B sharp, 6th octave). For reference, `"C3"` is middle C.
 
 The optional parameter `stopkey` can be set to the highest note that should not be exceeded in the scale. It defaults to the note exactly one octave above `startkey`. If you do set it, it must be higher than `startkey`.
 
