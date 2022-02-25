@@ -79,11 +79,7 @@ Parameter names are optional:
 ```python
 >>> ambitus.diatonic("Phrygian", "D2")
 [D2, Eb2, F2, G2, A2, Bb2, C3, D3]
->>> ambitus.diatonic("Locrian", "Cb3")
-[Cb3, Dbb3, Ebb3, Fb3, Gbb3, Abb3, Bbb3, Cb4]
 ```
-
-Note that it is possible to generate scales that may require glyphs like double-flat and double-sharp which are currently not supported in Ambitus.
 
 ### Additional scales
 Support for chromatic, halftone-wholetone, pentatonic, blues scales and possibly others is planned but not currently implemented.
@@ -122,6 +118,15 @@ Tq-6:q-5:q-4:q-3:q-2:q-1:q:q1:|
 ```
 
 ![image](https://user-images.githubusercontent.com/15966631/155388245-1ebfc6ee-3b2f-48e5-a02a-a70f0eb057ac.png)
+
+```python
+>>> scale = ambitus.diatonic("Locrian", "Cb4")
+>>> print(scale)
+[Cb4, Dbb4, Ebb4, Fb4, Gbb4, Abb4, Bbb4, Cb5]
+>>> print(ambitus.build_glyphs(scale, sep="/", start=":"))
+T:bq-6/bbq-5/bbq-4/bq-3/bbq-2/bbq-1/bbq/bq1:|
+```
+![image](https://user-images.githubusercontent.com/15966631/155738916-46bf4f5a-0ca3-4191-92f8-7ccb81224c33.png)
 
 ```python
 >>> scale = ambitus.diatonic("Mixolydian", startkey="F#3", stopkey="C6")
