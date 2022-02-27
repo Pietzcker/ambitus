@@ -41,7 +41,7 @@ However, in general you don't need to generate notes individually, we want to bu
 The `diatonic()` function returns a list of `Note` objects that can later be fed into the glyph generator. 
 
 ```python
-diatonic(scale="Major", startkey="C3", stopkey="")
+diatonic(scale="Major", startkey="C4", stopkey="")
 ```
 
 The parameter `scale` can be set to [one of the following values](https://en.wikipedia.org/wiki/Jazz_scale): 
@@ -63,9 +63,9 @@ The parameter `scale` can be set to [one of the following values](https://en.wik
  - `"Locrian n2"`
  - `"Altered dominant"`
 
-`startkey` (defaulting to `"C4"`) can be set to any key between `Cb1` (C flat, first octave) and `"B#6"` (B sharp, 6th octave). For reference, `"C3"` is middle C.
+`startkey` defaults to `"C4"` but can be set to any note between `Cb1` (C flat, first octave) and `"B#6"` (B sharp, 6th octave). For reference, `"C4"` is middle C.
 
-The optional parameter `stopkey` can be set to the highest note that should not be exceeded in the scale. It defaults to the note exactly one octave above `startkey`. If you do set it, it must be higher than `startkey`.
+The optional parameter `stopkey` can be set to a different note in the same range and determines where the scale will end. It defaults to the note exactly one octave above `startkey`. If you set `stopkey` below `startkey`, the scale will be constructed downwards (useful for minor scales, for example – harmonic minor for the ascending scale, melodic minor for the descending scale). If you choose a `stopkey` that isn't part of the scale (like `C#5` when building a C major scale from `C4`), scale construction will end before passing that note (`C5` in this example).
 
 ```python
 >>> ambitus.diatonic(scale="Aeolian", startkey="Bb4")
