@@ -124,7 +124,7 @@ def diatonic(scale="Major", startkey="C4", stopkey=""):
     startkey is composed of a key (one of CDEFGAB), an optional accidental (b or #) and an octave (1-6).
     Note that the lowest possible key in the bass clef is Ab1, and the highest possible key in the
     treble clef is "E#6", so if you exceed these values, you will not be able to build a complete scale.
-    Middle C is "C3".
+    Middle C is "C4".
     stopkey is optional. If it is left blank, it will default to one octave above startkey (or "E#6" if lower).
     Return value is a list of notes that can be fed into a glyph generator. Note that it is possible to generate 
     scales that can't be written in Ambitus."""
@@ -147,27 +147,38 @@ def diatonic(scale="Major", startkey="C4", stopkey=""):
         stop.oct +=1
         if stop > highest:
             stop = highest
-    if stop < start:
-        raise ValueError(f"{stop} is below {start}!")
+    step = 1 if stop > start else -1
 
     # Step through the scale from the chosen starting note
     current = start
     base_index = "ABCDEFG".find(start.note)  # Use the aeolian scale as reference
     scale_index = 0                          # Mark the position within the chosen scale
     notes = []
-    while current <= stop:
+    while True:
+        if step == 1:
+            if current > stop: break
+            basestep = steps[base_index]         # How many halftone steps would it take on the basic scale,...
+            scalestep = scale[scale_index]       # ... and how many on the chosen scale to advance to the next note?
+        else:
+            if current < stop: break
+            basestep = steps[base_index - 1]     # When going downwards, look at the previous step
+            scalestep = scale[scale_index - 1]   # 
         notes.append(copy.copy(current))
-        basestep = steps[base_index]         # How many halftone steps would it take on the basic scale,...
-        scalestep = scale[scale_index]       # ... and how many on the chosen scale to advance to the next note?
-        current.alt += scalestep-basestep    # If they differ, the number of accidentals must increase or decrease
-        base_index = (base_index + 1) % 7    # Advance one note, wrapping around after 7 steps
-        scale_index = (scale_index + 1) % 7  # Same here
-        current.note = chr(ord(current.note) + 1)        # Note name advances as well, both by name (C -> D)
-        current.noteindex = (current.noteindex + 1) % 7  # as well as by number (0 -> 1)
-        if current.note == "H":              # If we passed G, we must do back to A
-            current.note = "A"
-        elif current.note == "C":            # If we reached C, we have advanced into the next octave
-            current.oct += 1
+        current.alt += (scalestep - basestep) * step   # If they differ, the number of accidentals must increase or decrease
+        base_index = (base_index + step) % 7           # Advance one note, wrapping around after 7 steps
+        scale_index = (scale_index + step) % 7         # Same here
+        current.note = chr(ord(current.note) + step)        # Note name advances as well, both by name (C -> D)
+        current.noteindex = (current.noteindex + step) % 7  # as well as by number (0 -> 1)
+        if step==1:
+            if current.note == "H":              # If we passed G, we must go back to A
+                current.note = "A"
+            elif current.note == "C":            # If we reached C, we have advanced into the next octave
+                current.oct += 1
+        else:
+            if current.note == "@":              # If we passed A, we must go back to G
+                current.note = "G"
+            elif current.note == "B":            # If we reached C, we have advanced into the next octave
+                current.oct -= 1
     return notes
 
 def diatonic_distance(note, ref_note):
@@ -214,7 +225,7 @@ def build_keysig(clef, key):
         num_acc = ""
     return clefs[clef] + acc + num_acc
 
-def build_glyphs(notes, clef="treble", head="q", stem=True, sep=":", start="", end=":|", key="c", reversed=False):
+def build_glyphs(notes, clef="treble", head="q", stem=True, sep=":", start="", end=":|", key="c"):
     glyphs = []
     for note in notes:
         if g:= glyph(note, clef, head, "" if stem else "s", key):
@@ -298,14 +309,9 @@ if __name__ == "__main__":
         end = input("Any additional characters at the end (default ':|')? ")
         if not end:
             end = ":|"
-        reversed = False
-        reverse_scale = input("Reverse direction (default: No)? ")
-        if reverse_scale:
-            if reverse_scale[0].lower() == "y":
-                reversed = True 
 
         print()
-        print(build_glyphs(notes, clef, head, stem, sep, start, end, key, reversed))
+        print(build_glyphs(notes, clef, head, stem, sep, start, end, key))
         print()
 
 
