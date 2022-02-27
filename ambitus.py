@@ -214,11 +214,12 @@ def build_keysig(clef, key):
         num_acc = ""
     return clefs[clef] + acc + num_acc
 
-def build_glyphs(notes, clef="treble", head="q", stem=True, sep=":", start="", end=":|", key="c"):
+def build_glyphs(notes, clef="treble", head="q", stem=True, sep=":", start="", end=":|", key="c", reversed=False):
     glyphs = []
     for note in notes:
         if g:= glyph(note, clef, head, "" if stem else "s", key):
             glyphs.append(g)
+    if reversed: glyphs.reverse()
     return build_keysig(clef, key) + start + sep.join(glyphs) + end
 
 
@@ -248,7 +249,7 @@ if __name__ == "__main__":
             end = input("End scale at or below (default: one octave above the beginning)? ")
             try:
                 notes = diatonic(scale, base, end)
-            except ValueError as err:
+            except (ValueError, IndexError) as err:
                 print(err)
                 continue
             break
@@ -297,9 +298,14 @@ if __name__ == "__main__":
         end = input("Any additional characters at the end (default ':|')? ")
         if not end:
             end = ":|"
+        reversed = False
+        reverse_scale = input("Reverse direction (default: No)? ")
+        if reverse_scale:
+            if reverse_scale[0].lower() == "y":
+                reversed = True 
 
         print()
-        print(build_glyphs(notes, clef, head, stem, sep, start, end, key))
+        print(build_glyphs(notes, clef, head, stem, sep, start, end, key, reversed))
         print()
 
 
