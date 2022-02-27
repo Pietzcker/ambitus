@@ -230,7 +230,6 @@ def build_glyphs(notes, clef="treble", head="q", stem=True, sep=":", start="", e
     for note in notes:
         if g:= glyph(note, clef, head, "" if stem else "s", key):
             glyphs.append(g)
-    if reversed: glyphs.reverse()
     return build_keysig(clef, key) + start + sep.join(glyphs) + end
 
 
