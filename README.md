@@ -190,7 +190,7 @@ Here's an example session:
     Note A6 out of range for treble clef (Fb3-E#6)
     Th-1s/hs/#h1s/h2s/h3s/#h4s/#h5s/h6s/h7s/#h8s/h9s/h0s:|
     
-    Choose a scale or press <Enter> to quit: 1
+    Choose a scale or press <Enter> to quit:
     Exiting...
 
 Result:
