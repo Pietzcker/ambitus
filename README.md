@@ -177,9 +177,9 @@ Here's an example session:
     Begin scale at (default: C4)? A4
     End scale at or below (default: one octave above the beginning)? A6
     Scale:  [A4, B4, C#5, D5, E5, F#5, G#5, A5, B5, C#6, D6, E6, F#6, G#6, A6]
-    Which clef should be used (treble (default), bass, alto or tenor)? trble
+    Which clef should be used (TReble (default), BAss, ALto or TEnor)? tw
     Invalid clef!
-    Which clef should be used (treble (default), bass, alto or tenor)? treble
+    Which clef should be used (TReble (default), BAss, ALto or TEnor)? tr
     Choose separator (one of ;:/?_ (default ':')) /
     Choose notehead (one of q (default), h, w) h
     Remove stems (default: No)? y

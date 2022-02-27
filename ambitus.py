@@ -267,13 +267,17 @@ if __name__ == "__main__":
 
         print("Scale: ", notes)
         while True:
-            clef = input("Which clef should be used (treble (default), bass, alto or tenor)? ").lower()
+            clef = input("Which clef should be used (TReble (default), BAss, ALto or TEnor)? ").lower()
             if not clef:
                 clef = "treble"
-            if clef not in ["treble", "bass", "alto", "tenor"]:
-                print("Invalid clef!")
-                continue
-            break
+            for c in ["treble", "bass", "alto", "tenor"]:
+                if c.startswith(clef):
+                    clef =  c
+                    break
+            if clef in ["treble", "bass", "alto", "tenor"]:
+                break
+            print("Invalid clef!")
+
         while True:
             key = input("Which key signature, if any (e. g. F, Gm, Bb, F#m or <Enter> for C)? ").lower()
             if not key:
