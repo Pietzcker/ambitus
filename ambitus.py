@@ -23,6 +23,38 @@ scales = {"Major":          (2,2,1,2,2,2,1),
           "Altered dominant": (1,2,1,2,2,2,2),
           }
 
+signatures = {"c":   [0],
+              "am":  [0],
+              "f":   [-1, "B"],
+              "dm":  [-1, "B"],
+              "bb":  [-1, "B", "E"],
+              "gm":  [-1, "B", "E"],
+              "eb":  [-1, "B", "E", "A"],
+              "cm":  [-1, "B", "E", "A"],
+              "ab":  [-1, "B", "E", "A", "D"],
+              "fm":  [-1, "B", "E", "A", "D"],
+              "db":  [-1, "B", "E", "A", "D", "G"],
+              "bbm": [-1, "B", "E", "A", "D", "G"],
+              "gb":  [-1, "B", "E", "A", "D", "G", "C"],
+              "ebm": [-1, "B", "E", "A", "D", "G", "C"],
+              "cb":  [-1, "B", "E", "A", "D", "G", "C", "F"],
+              "abm": [-1, "B", "E", "A", "D", "G", "C", "F"],
+              "g":   [1, "F"],
+              "em":  [1, "F"],
+              "d":   [1, "F", "C"],
+              "bm":  [1, "F", "C"],
+              "a":   [1, "F", "C", "G"],
+              "f#m": [1, "F", "C", "G"],
+              "e":   [1, "F", "C", "G", "D"],
+              "c#m": [1, "F", "C", "G", "D"],
+              "b":   [1, "F", "C", "G", "D", "A"],
+              "g#m": [1, "F", "C", "G", "D", "A"],
+              "f#":  [1, "F", "C", "G", "D", "A", "E"],
+              "d#m": [1, "F", "C", "G", "D", "A", "E"],
+              "c#":  [1, "F", "C", "G", "D", "A", "E", "B"],
+              "a#m": [1, "F", "C", "G", "D", "A", "E", "B"]
+             }
+
 # glyphs for all the clefs
 clefs = {"treble": "T", "bass": "B", "alto": "A", "tenor": "t"}
 
@@ -142,7 +174,9 @@ def diatonic_distance(note, ref_note):
     """Returns the number of positions (lines/spaces) a certain note is removed from the middle staff line."""
     return note.noteindex - ref_note.noteindex + 7 * (note.oct - ref_note.oct)
 
-def glyph(note, clef="treble", head="q", stem=""):
+def glyph(note, clef="treble", head="q", stem="", key="c"):
+    key_alt = signatures[key][0]  # -1 for b keysigs, 1 for # keysigs, 0 for C/Am
+    key_acc = signatures[key][1:] # list of notes that have an accidental in that key
     if not ranges[clef]["low"] <= note <= ranges[clef]["high"]:
         print(f'Note {note} out of range for {clef} clef ({ranges[clef]["low"]}-{ranges[clef]["high"]})')
         return None
@@ -158,11 +192,11 @@ def glyph(note, clef="treble", head="q", stem=""):
             distance = str(distance)
     match note.alt:
         case -1: 
-            acc = "b"
+            acc = "" if (key_alt == -1 and note.note in key_acc) else "b"
         case 1: 
-            acc = "#"
+            acc = "" if (key_alt == 1 and note.note in key_acc) else "#"
         case 0:
-            acc = ""
+            acc = "n" if (key_alt and note.note in key_acc) else "" 
         case -2: 
             acc = "bb"
         case 2:
@@ -171,12 +205,22 @@ def glyph(note, clef="treble", head="q", stem=""):
             raise ValueError(f"Invalid accidental value: {note.alt}")
     return f"{acc}{head}{distance}{stem}"
 
-def build_glyphs(notes, clef="treble", head="q", stem=True, sep=":", start="", end=":|"):
+def build_keysig(clef, key):
+    if alt := signatures[key][0]:
+        acc = "b" if alt == -1 else "#"
+        num_acc = str(len(signatures[key][1:]))
+    else:
+        acc = ""
+        num_acc = ""
+    return clefs[clef] + acc + num_acc
+
+def build_glyphs(notes, clef="treble", head="q", stem=True, sep=":", start="", end=":|", key="c"):
     glyphs = []
     for note in notes:
-        if g:= glyph(note, clef, head, "" if stem else "s"):
+        if g:= glyph(note, clef, head, "" if stem else "s", key):
             glyphs.append(g)
-    return clefs[clef] + start + sep.join(glyphs) + end
+    return build_keysig(clef, key) + start + sep.join(glyphs) + end
+
 
 if __name__ == "__main__":
     print("Welcome to Ambitus!")
@@ -219,6 +263,15 @@ if __name__ == "__main__":
                 continue
             break
         while True:
+            key = input("Which key signature, if any (e. g. F, Gm, Bb, F#m or <Enter> for C)? ").lower()
+            if not key:
+                key = "c"
+            if key not in signatures:
+                print("Invalid key signature! Choose one of the following:")
+                print(", ".join(keysig.title() for keysig in signatures))
+                continue
+            break
+        while True:
             sep = input("Choose separator (one of ;:/?_ (default ':')): ")
             if not sep:
                 sep = ":"
@@ -246,7 +299,7 @@ if __name__ == "__main__":
             end = ":|"
 
         print()
-        print(build_glyphs(notes, clef, head, stem, sep, start, end))
+        print(build_glyphs(notes, clef, head, stem, sep, start, end, key))
         print()
 
 
