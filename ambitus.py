@@ -56,7 +56,7 @@ signatures = {"c":   [0],
              }
 
 # glyphs for all the clefs
-clefs = {"treble": "T", "bass": "B", "alto": "A", "tenor": "t"}
+clefs = {"treble": "T", "bass": "B", "alto": "A", "tenor": "t", "treble8": "T8"}
 
 class Note:
     """Builds a Note object that contains information about the base note (CDEFGAB), any alterations (-1 for flat,
@@ -113,6 +113,7 @@ class Note:
 # legal ranges for all clefs supported by Ambitus, as well as the note on the middle line
 ranges = {"bass": {"low": Note("Ab1"), "high": Note("G#4"), "middle": Note("D3")},
           "treble": {"low": Note("Fb3"), "high": Note("E#6"), "middle": Note("B4")},
+          "treble8": {"low": Note("Fb3"), "high": Note("E#6"), "middle": Note("B4")},
           "alto": {"low": Note("Gb2"), "high": Note("F#5"), "middle": Note("C4")},
           "tenor": {"low": Note("Eb2"), "high": Note("D#5"), "middle": Note("A3")}
          }
@@ -266,14 +267,17 @@ if __name__ == "__main__":
 
         print("Scale: ", notes)
         while True:
-            clef = input("Which clef should be used (TReble (default), BAss, ALto or TEnor)? ").lower()
+            clef = input("Which clef should be used (TReble (default), BAss, ALto, TEnor or T8 (for treble octave))? ").lower()
             if not clef:
                 clef = "treble"
             for c in ["treble", "bass", "alto", "tenor"]:
+                if clef == "t8":
+                    clef = "treble8"
+                    break
                 if c.startswith(clef):
                     clef =  c
                     break
-            if clef in ["treble", "bass", "alto", "tenor"]:
+            if clef in ["treble", "bass", "alto", "tenor", "treble8"]:
                 break
             print("Invalid clef!")
 
