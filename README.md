@@ -103,7 +103,7 @@ build_glyphs(notes, clef="treble", head="q", stem=True, sep=":", start="", end="
 ```
 
  - `notes` is the list of `Note` objects (required).
- - `clef` can be any of `"treble"`(default), `"bass"`, `"alto"`, or `"tenor"`. Note that Ambitus only supports glyphs up to three ledger lines off the standard staff, so if you try to write `C2` in the treble clef, no glyph will be generated, and you'll see a warning message to that effect.
+ - `clef` can be any of `"treble"` (default), `"bass"`, `"alto"`, `"tenor"`, `"treble8"` (for treble octave), `"soprano"`, or `"mezzosoprano"`. Note that Ambitus only supports glyphs up to three ledger lines off the standard staff, so if you try to write `C2` in the treble clef, no glyph will be generated, and you'll see a warning message to that effect.
  - `head` can be set to `"q"` for quarter notes (default), `"h"` for half notes, and `"w"` for whole notes.
  - `stem` is `True` by default. If you set it to `False`, quarter or half notes will be printed without a stem.
  - `sep` is the separator you want to use between notes. It defaults to `":"` which is adequate for quarter and half note scales but may be a bit narrow for whole noted scales. Other separators include (in ascending width) `"/"`, `"?"` and `"_"`. A narrower separator `";"` is also available, but probably too narrow unless your scales doesn't contain any accidentals.
@@ -177,9 +177,11 @@ Here's an example session:
     Begin scale at (default: C4)? A4
     End scale at or below (default: one octave above the beginning)? A6
     Scale:  [A4, B4, C#5, D5, E5, F#5, G#5, A5, B5, C#6, D6, E6, F#6, G#6, A6]
-    Which clef should be used (TReble (default), BAss, ALto, TEnor or T8 (for treble octave))? tw
+    Which clef should be used?
+    TReble (default), BAss, ALto, TEnor, T8 (treble octave), SOprano, MEzzo: tw
     Invalid clef!
-    Which clef should be used (TReble (default), BAss, ALto, TEnor or T8 (for treble octave))? tr
+    Which clef should be used?
+    TReble (default), BAss, ALto, TEnor, T8 (treble octave), SOprano, MEzzo: tr
     Choose separator (one of ;:/?_ (default ':')) /
     Choose notehead (one of q (default), h, w) h
     Remove stems (default: No)? y
